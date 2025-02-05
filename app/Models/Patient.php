@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Patient extends Model
+class Patient extends BaseModel
 {
     use SoftDeletes;
 
@@ -15,6 +15,8 @@ class Patient extends Model
         'family_owner_id',
         'weight',
         'height',
+        'gender',
+        'birthday'
     ];
 
     public function user()

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\FamilyMember;
-use App\Repository\FamilyMembers\FamilyMembersRepository;
-use Illuminate\Container\Attributes\Auth;
+use App\Repositories\FamilyMembers\FamilyMembersRepository;
 use Illuminate\Http\Request;
 
 class FamilyMembersController extends Controller
@@ -20,7 +18,6 @@ class FamilyMembersController extends Controller
     }
 
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -30,8 +27,6 @@ class FamilyMembersController extends Controller
             'members.*.relationship' => 'required|string|max:255',
             'members.*.birthday' => 'required|date|before:today',
         ]);
-
-        // $familyOwner = Auth()->user();
 
         $createdMembers = $this->familyMembers->store($request, $this->familyOwner);
 

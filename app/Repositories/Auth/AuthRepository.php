@@ -1,34 +1,53 @@
 <?php
 
-namespace App\Repository\Auth;
+namespace App\Repositories\Auth;
 
+use App\Enums\RoleEnum;
 use App\Interfaces\AuthRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Repositories\Patient\PatientRepository;
 use App\SaveFilesHelperClass;
+use Spatie\Permission\Models\Role;
 
 class AuthRepository implements AuthRepositoryInterface
 {
+
+    protected $patientRepo;
+
+    public function __construct(PatientRepository $patientRepo)
+    {
+        $this->patientRepo = $patientRepo;
+    }
+
     public function register(array $data)
     {
 
         $user = User::create([
-            'full_name' => $data['full_name'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone'],
             'city' => $data['city'],
             'hood' => $data['hood'],
             'gender' => $data['gender'],
-            'birthday' => $data['birthday'],
             'role_id' => $data['role_id']
         ]);
+
+
+        $role = Role::find($data['role_id'])->name;
+
+        if ($role === RoleEnum::PATIENT->value) {
+            $this->patientRepo->store($data, $user->id, false);
+        }
+        elseif($role === RoleEnum::FAMILY->value) {
+            $this->patientRepo->store($data, $user->id, true);
+        }
 
         $token = $user->createToken('API Token')->plainTextToken;
 
         return [
             'token' => $token,
-            'user' => $user,
+            'user' => $user->load('role'),
         ];
     }
 
@@ -41,7 +60,7 @@ class AuthRepository implements AuthRepositoryInterface
             return [
                 'success' => true,
                 'token' => $token,
-                'user' => $user,
+                'user' => $user->load('role'),
             ];
         }
 
@@ -54,7 +73,7 @@ class AuthRepository implements AuthRepositoryInterface
     public function updateProfile($request)
     {
         $user = auth()->user();
-        $fields = ['full_name', 'phone', 'avatar', 'city', 'hood', 'gender', 'birthday'];
+        $fields = ['phone', 'avatar', 'city', 'hood', 'gender', 'birthday'];
 
         foreach ($fields as $field) {
             if ($request->has($field)) {

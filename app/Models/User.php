@@ -16,21 +16,21 @@ class User extends Authenticatable
 
 
        protected $fillable = [
-        'full_name',
         'phone',
         'password',
         'city',
         'hood',
-        'gender',
-        'birthday',
         'role_id',
-        'specialization_id',
         'avatar'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'email_verified_at'
     ];
 
     protected function casts(): array

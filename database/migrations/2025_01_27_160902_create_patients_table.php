@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('family_owner_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->float('weight')->nullable();
             $table->float('height')->nullable();
+            $table->date('birthday')->nullable();
+            $table->enum('gender', ['Male', 'Female']);
             $table->timestamps();
             $table->softDeletes();
         });

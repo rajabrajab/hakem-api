@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Repository\FamilyMembers;
+namespace App\Repositories\FamilyMembers;
 
 use App\Interfaces\FamilyMemberRepositoryInterface;
 use App\Models\FamilyMember;
-use App\Models\Patient;
-use Illuminate\Http\Request;
+use App\Repositories\Patient\PatientRepository;
 
 class FamilyMembersRepository implements FamilyMemberRepositoryInterface
 {
+    protected $patientRepo;
+
+    public function __construct(PatientRepository $patientRepo)
+    {
+        $this->patientRepo = $patientRepo;
+    }
+
     public function store($data ,$familyOwner)
     {
         return collect($data->members)->map(function ($member) use ($familyOwner) {
 
-        $patient = Patient::create([
-            'family_owner_id' => $familyOwner->id,
-            'full_name' => $member['full_name'],
-            'gender' => $member['gender'],
-            'birthday' => $member['birthday']
-        ]);
+        $patient = $this->patientRepo->store($member, $familyOwner->id, true);
 
 
         return FamilyMember::create([
             'family_owner_id' => $familyOwner->id,
             'patient_id' => $patient->id,
             'relationship' => $member['relationship'],
-
             ]);
         });
     }
@@ -36,13 +36,8 @@ class FamilyMembersRepository implements FamilyMemberRepositoryInterface
 
         $patient = $familyMember->patient;
 
-        $patient->update([
-            'full_name' => $data->input('full_name', $patient->full_name),
-            'gender' => $data->input('gender', $patient->gender),
-            'birthday' => $data->input('birthday', $patient->birthday),
-            'weight' => $data->input('weight', $patient->weight),
-            'height' => $data->input('height', $patient->height),
-        ]);
+
+        $this->patientRepo->update($patient, $data->all());
 
 
         $familyMember->update([
