@@ -45,10 +45,6 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function specialization(){
-        return $this->belongsTo(Specialty::class);   ///// relation for doctor acconts
-    }
-
     public function familyMembers(){
         return $this->hasMany(FamilyMember::class,'family_owner_id');  ///// relation for family acconts
     }
@@ -56,5 +52,10 @@ class User extends Authenticatable
     public function patient()
     {
         return $this->hasOne(Patient::class);
+    }
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
     }
 }

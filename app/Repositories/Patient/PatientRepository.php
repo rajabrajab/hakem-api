@@ -9,7 +9,15 @@ use App\Models\Patient;
 
 class PatientRepository implements PatientRepositoryInterface
 {
-    public function store($data,$ownerId, $isFamilyMember = false)
+
+    public function index()
+    {
+        $patients =  Patient::with('user')->get();
+
+        return $patients;
+    }
+
+    public function store($data,$ownerId = null, $isFamilyMember = false)
     {
         return Patient::create([
                 'full_name' => $data['full_name'],
@@ -33,5 +41,14 @@ class PatientRepository implements PatientRepositoryInterface
         ]);
 
         return $patient;
+    }
+
+    public function delete($id)
+    {
+        $patient = Patient::findOrFail($id);
+
+        $patient->delete();
+
+        return true;
     }
 }

@@ -29,7 +29,6 @@ class AuthRepository implements AuthRepositoryInterface
             'phone' => $data['phone'],
             'city' => $data['city'],
             'hood' => $data['hood'],
-            'gender' => $data['gender'],
             'role_id' => $data['role_id']
         ]);
 

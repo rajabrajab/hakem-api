@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\FamilyMembersController;
+use App\Http\Controllers\Api\V1\PatientController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,5 +16,7 @@ Route::put('profile', [AuthController::class, 'updateProfile'])->middleware('aut
 // ############################  Family Members Apis ############################ //
 
 Route::resource('family-members', FamilyMembersController::class)->middleware('auth:sanctum');
+
+Route::resource('patients', PatientController::class)->middleware('auth:sanctum');
 
 
