@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
-use App\Repositories\PatientRepository;
+use App\Repositories\DoctorRepository;
 use Illuminate\Http\Request;
 
-class PatientController extends Controller
+class DoctorsController extends Controller
 {
-    protected $patientRepository;
+    protected $doctorRepository;
 
-    public function __construct(PatientRepository $patientRepository)
+    public function __construct(DoctorRepository $doctorRepository)
     {
-        $this->patientRepository = $patientRepository;
+        $this->doctorRepository = $doctorRepository;
     }
 
 
     public function index()
     {
-        $patients = $this->patientRepository->index();
-        return response()->data($patients);
+        $doctors = $this->doctorRepository->index();
+        return response()->data($doctors);
     }
 
     public function store(Request $request)
@@ -33,12 +32,12 @@ class PatientController extends Controller
             'height' => 'nullable|numeric',
         ]);
 
-        $patient = $this->patientRepository->store($data);
+        $doctor = $this->doctorRepository->store($data);
 
-        return response()->data($patient,'Patient added successfully.');
+        return response()->data($doctor,'Doctor added successfully.');
     }
 
-     public function update(Request $request, Patient $patient)
+     public function update(Request $request,int $id)
     {
         $data = $request->validate([
             'full_name' => 'nullable|string',
@@ -48,15 +47,15 @@ class PatientController extends Controller
             'height' => 'nullable|numeric',
         ]);
 
-        $patient = $this->patientRepository->update($patient, $data);
+        $doctor = $this->doctorRepository->update($doctor, $data);
 
-        return response()->data($patient,'Patient updated successfully.');
+        return response()->data($doctor,'Doctor updated successfully.');
     }
 
     public function destroy($id)
     {
-        $this->patientRepository->delete($id);
+        $this->doctorRepository->delete($id);
 
-        return response()->success('Patient deleted successfully.');
+        return response()->success('doctor deleted successfully.');
     }
 }

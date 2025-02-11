@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Patient;
+namespace App\Repositories;
 
 
 use App\Interfaces\PatientRepositoryInterface;

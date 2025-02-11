@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\FamilyMembers;
+namespace App\Repositories;
 
 use App\Interfaces\FamilyMemberRepositoryInterface;
 use App\Models\FamilyMember;
-use App\Repositories\Patient\PatientRepository;
+use App\Repositories\PatientRepository;
 
 class FamilyMembersRepository implements FamilyMemberRepositoryInterface
 {

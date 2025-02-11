@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Specialty extends Model
+class Specialty extends BaseModel
 {
     use SoftDeletes;
 

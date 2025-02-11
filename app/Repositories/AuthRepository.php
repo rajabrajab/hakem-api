@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Auth;
+namespace App\Repositories;
 
 use App\Enums\RoleEnum;
 use App\Interfaces\AuthRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Repositories\Patient\PatientRepository;
+use App\Repositories\PatientRepository;
 use App\SaveFilesHelperClass;
 use Spatie\Permission\Models\Role;
 

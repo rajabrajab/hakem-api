@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\FamilyMembers\FamilyMembersRepository;
+use App\Repositories\FamilyMembersRepository;
 use Illuminate\Http\Request;
 
 class FamilyMembersController extends Controller
