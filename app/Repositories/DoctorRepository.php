@@ -2,15 +2,32 @@
 
 namespace App\Repositories;
 
+use App\Helpers\FilterHelper;
 use App\Interfaces\DoctorRepositoryInterface;
 use App\Models\Doctor;
 
 class DoctorRepository implements DoctorRepositoryInterface
 {
 
-    public function index()
+    public function index($request)
     {
-        $doctors =  Doctor::with(['user','specialty'])->get();
+
+        $filters = [
+            'full_name' => $request->full_name,
+            'city' => $request->city,
+            'hood' => $request->hood,
+            'specialty_id' => $request->specialty_id
+        ];
+
+        $relations = [
+            'full_name' => 'user',
+            'hood' => 'user',
+            'city' => 'user'
+        ];
+
+        $query =  Doctor::with(['user','specialty']);
+
+        $doctors = FilterHelper::applyFilters($query, $filters,$relations)->get();
 
         return $doctors;
     }

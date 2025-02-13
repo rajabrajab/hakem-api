@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Doctor;
 use App\Models\Specialty;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,6 +27,7 @@ class DoctorSeeder extends Seeder
             ]);
 
             Doctor::create([
+                'full_name' => 'دكتور' . $i,
                 'user_id' => $user->id,
                 'specialty_id' => $specialties->random()->id,
                 'gender' => $i % 2 === 0 ? 'Male' : 'Female',

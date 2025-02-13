@@ -9,6 +9,7 @@ class Doctor extends BaseModel
     use SoftDeletes;
 
     protected $fillable = [
+        'full_name',
         'user_id',
         'specialty_id',
         'gender',

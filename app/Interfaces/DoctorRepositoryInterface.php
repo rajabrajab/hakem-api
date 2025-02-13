@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface DoctorRepositoryInterface{
 
-    public function index();
+    public function index(array $data);
 
     public function store(array $data);
 
