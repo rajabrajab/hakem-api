@@ -10,7 +10,7 @@ class FilterHelper
     {
         foreach ($filters as $field => $value) {
             if (!empty($value)) {
-              
+
                 if (array_key_exists($field, $relations)) {
                     $relation = $relations[$field];
                     $query->whereHas($relation, function ($q) use ($field, $value) {

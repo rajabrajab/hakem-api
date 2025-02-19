@@ -10,6 +10,9 @@ class Doctor extends BaseModel
 
     protected $fillable = [
         'full_name',
+        'clinic_location',
+        'clinic_start_time',
+        'clinic_end_time',
         'user_id',
         'specialty_id',
         'gender',
