@@ -25,11 +25,15 @@ class DoctorRepository implements DoctorRepositoryInterface
             'city' => 'user'
         ];
 
-        $query =  Doctor::with(['user','specialty']);
+        $query =  Doctor::with('user');
 
         $doctors = FilterHelper::applyFilters($query, $filters,$relations)->get();
 
-        return $doctors;
+        $groupedDoctors = $doctors->groupBy(function ($doctor) {
+            return $doctor->specialty->name;
+        });
+
+        return $groupedDoctors;
     }
 
     public function show($id)
