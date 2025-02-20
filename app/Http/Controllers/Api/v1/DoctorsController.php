@@ -19,7 +19,13 @@ class DoctorsController extends Controller
     public function index(Request $request)
     {
         $doctors = $this->doctorRepository->index($request);
-        return response()->data($doctors);
+
+        if($request->specialty_id)
+        {
+            return response()->data(...$doctors);
+        }else{
+            return response()->data($doctors);
+        }
     }
 
     public function show(Request $request, $id)
