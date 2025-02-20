@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Repositories\DoctorRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 class DoctorsController extends Controller
 {
@@ -21,6 +20,13 @@ class DoctorsController extends Controller
     {
         $doctors = $this->doctorRepository->index($request);
         return response()->data($doctors);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $doctor = $this->doctorRepository->show($id);
+
+        return response()->data($doctor);
     }
 
     public function store(Request $request)
