@@ -27,13 +27,23 @@ class DoctorRepository implements DoctorRepositoryInterface
 
         $query =  Doctor::with('user');
 
-        $doctors = FilterHelper::applyFilters($query, $filters,$relations)->get();
+        if($request->limit){
+            $doctors = FilterHelper::applyFilters($query, $filters,$relations)->take($request->limit)->get();
+        }else{
+            $doctors = FilterHelper::applyFilters($query, $filters,$relations)->get();
+        }
 
-        $groupedDoctors = $doctors->groupBy(function ($doctor) {
-            return $doctor->specialty->name;
-        });
 
-        return $groupedDoctors;
+        $groupedDoctors = $doctors->groupBy(fn($doctor) => $doctor->specialty->name);
+
+        $formatedDoctors = $groupedDoctors->map(function($doctors, $speciltyName){
+            return [
+                'name' => $speciltyName,
+                'data' => $doctors->values()
+            ];
+        })->values();
+
+        return $formatedDoctors;
     }
 
     public function show($id)
