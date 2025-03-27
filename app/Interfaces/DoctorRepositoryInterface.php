@@ -8,7 +8,7 @@ interface DoctorRepositoryInterface{
 
     public function store(array $data);
 
-    public function update(int $id ,array $data);
+    public function update(int $id ,array $doctorData, array $userData);
 
     public function delete(int $id);
 };

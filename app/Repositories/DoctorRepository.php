@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Helpers\FilterHelper;
 use App\Interfaces\DoctorRepositoryInterface;
 use App\Models\Doctor;
+use App\Models\User;
+use Illuminate\Support\Arr;
 
 class DoctorRepository implements DoctorRepositoryInterface
 {
@@ -55,18 +57,41 @@ class DoctorRepository implements DoctorRepositoryInterface
 
     public function store(array $data)
     {
-        $doctor = Doctor::create($data);
+
+        $user = User::create([
+            'phone' => $data['phone'],
+            'password' => bcrypt($data['password']),
+            'role_id' => 4
+        ]);
+
+        $doctorData = array_merge($data, ['user_id' => $user->id]);
+
+        $doctor = Doctor::create($doctorData);
+
         return $doctor;
     }
 
-    public function update($id, array $data)
+    public function update($id,$doctorData,$userData = null)
     {
 
-        $room = Doctor::findOrFail($id);
+        $doctor = Doctor::findOrFail($id);
 
-        $room->update($data);
+        if (!empty($userData)) {
+            $doctor->user()->update($userData);
+        }
 
-        return $room;
+        $doctor->update(Arr::except($doctorData, ['holidays']));
+
+        if (isset($doctorData['holidays']) && is_array($doctorData['holidays'])) {
+            $doctor->holidays()->delete();
+
+            $holidaysData = array_map(fn($day) => ['day' => $day], $doctorData['holidays']);
+
+            $doctor->holidays()->createMany($holidaysData);
+        }
+
+
+        return $doctor;
     }
 
     public function delete($id)

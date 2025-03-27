@@ -21,7 +21,9 @@ class User extends Authenticatable
         'city',
         'hood',
         'role_id',
-        'avatar'
+        'image_id',
+        'is_first_login',
+        'last_login'
     ];
 
     protected $hidden = [
@@ -38,6 +40,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_first_login' => 'boolean'
         ];
     }
 

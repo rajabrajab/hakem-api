@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Repositories\PatientRepository;
 use App\SaveFilesHelperClass;
+use Illuminate\Support\Facades\Date;
 use Spatie\Permission\Models\Role;
 
 class AuthRepository implements AuthRepositoryInterface
@@ -54,6 +55,13 @@ class AuthRepository implements AuthRepositoryInterface
     {
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+
+            if ($user->last_login == null) {
+                $user->update(['last_login' => now()]);
+            }else{
+                $user->update(['is_first_login' => false]);
+            }
+
             $token = $user->createToken('API Token')->plainTextToken;
 
             return [
