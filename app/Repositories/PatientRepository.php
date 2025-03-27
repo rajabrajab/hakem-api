@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-
+use App\Http\Resources\PatientResource;
 use App\Interfaces\PatientRepositoryInterface;
 use App\Models\Patient;
 
@@ -12,9 +12,13 @@ class PatientRepository implements PatientRepositoryInterface
 
     public function index()
     {
-        $patients =  Patient::with('user')->get();
+        $doctorId = auth()->id();
 
-        return $patients;
+        $patients = Patient::with('user')
+            ->where('doctor_id', $doctorId)
+            ->paginate(10);
+
+        return PatientResource::collection($patients);
     }
 
     public function store($data,$ownerId = null, $isFamilyMember = false)

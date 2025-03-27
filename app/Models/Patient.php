@@ -9,15 +9,7 @@ class Patient extends BaseModel
 {
     use SoftDeletes;
 
-    protected $fillable = [
-        'full_name',
-        'user_id',
-        'family_owner_id',
-        'weight',
-        'height',
-        'gender',
-        'birthday'
-    ];
+    protected $guarded = [];
 
     public function user()
     {
